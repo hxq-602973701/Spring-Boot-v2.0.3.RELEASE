@@ -1,12 +1,11 @@
 package com.example.demo.service.book.impl;
 
+import com.example.demo.dal.dao.base.BaseDAO;
 import com.example.demo.dal.dao.book.BookDAO;
-
-
-import javax.annotation.Resource;
-
 import com.example.demo.dal.entity.main.book.Book;
+import com.example.demo.service.base.impl.BaseServiceImpl;
 import com.example.demo.service.book.BookService;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,26 +13,26 @@ import java.util.List;
 /**
  * BookService
  *
- * @author lt 2017/9/1
+ * @author lt 2018-6-27
  * @version 1.0.0
  * @category 南阳理工学院
  */
 @Service
-public class BookServiceImpl  implements BookService {
-
+public class BookServiceImpl extends BaseServiceImpl<Book> implements BookService {
+    
     /**
      * BookDAO
      */
     @Resource
     private BookDAO bookDAO;
 
+    /**
+     * Mapper初始化
+     *
+     * @return
+     */
     @Override
-    public List<Book> selectBooks(Book book) {
-        return bookDAO.selectBooks(book);
-    }
-
-    @Override
-    public void insertBook(Book book) {
-        bookDAO.insertBook(book);
+    protected BaseDAO<Book> getDAO() {
+        return bookDAO;
     }
 }

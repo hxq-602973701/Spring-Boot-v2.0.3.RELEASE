@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
- *  Spring-boot 默认启动配置（禁用默认配置单数据源）
+ * Spring-boot 默认启动配置（禁用默认配置单数据源）
  */
 @SpringBootApplication
 public class DemoApplication extends WebMvcConfigurationSupport {

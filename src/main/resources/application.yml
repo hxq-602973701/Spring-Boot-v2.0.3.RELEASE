@@ -48,10 +48,6 @@ spring:
           pool-prepared-statements: false
           max-pool-prepared-statement-per-connection-size: 20
 
-#Mybatis配置
-mybatis:
-  mapper-locations: com.example.demo.dal.mapper.*
-  type-aliases-package: com.example.demo.dal.mapper.entity
 
 #pagehelper
 pagehelper:
@@ -60,3 +56,10 @@ pagehelper:
     supportMethodsArguments: true
     params: count=countSql
     returnPageInfo: check
+
+
+#Mybatis配置
+mybatis:
+  mapper-locations: com.example.demo.dal.mapper.*
+  type-aliases-package: com.example.demo.dal.mapper.entity
+

@@ -1,36 +1,36 @@
 package com.example.demo.dal.dao.book.impl;
 
+import com.example.demo.dal.dao.base.impl.BaseDAOImpl;
 import com.example.demo.dal.dao.book.BookDAO;
 import com.example.demo.dal.entity.main.book.Book;
 import com.example.demo.dal.mapper.main.book.BookMapper;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-import java.util.List;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * BookDAO
  *
- * @author lt 2017/9/1
+ * @author lt 2018-6-27
  * @version 1.0.0
  * @category 南阳理工学院
  */
 @Service
-public class BookDAOImpl  implements BookDAO {
-
+public class BookDAOImpl extends BaseDAOImpl<Book> implements BookDAO {
+    
     /**
      * BookMapper
      */
     @Resource
     private BookMapper bookMapper;
 
+    /**
+     * Mapper初始化
+     *
+     * @return
+     */
     @Override
-    public List<Book> selectBooks(Book book) {
-        return bookMapper.selectBooks(book);
-    }
-
-    @Override
-    public void insertBook(Book book) {
-        bookMapper.insertBook(book);
+    protected Mapper<Book> getMapper() {
+        return bookMapper;
     }
 }

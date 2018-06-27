@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+
+
+<generatorConfiguration>
+
+    <properties resource="myGeneratorConfig.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!-- TKmybatis配置 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 配置参数 -->
+        <property name="baseMapper" value="${base.mapper}"/>
+        <property name="baseDao" value="${mapper.baseDao}"/>
+        <property name="baseDaoImpl" value="${mapper.baseDaoImpl}"/>
+        <property name="baseService" value="${mapper.baseService}"/>
+        <property name="baseServiceImpl" value="${mapper.baseServiceImpl}"/>
+        <property name="mapperPackage" value="${targetMapperPackage}.${table.dataSourceDir}"/>
+        <property name="entityPackage" value="${targetModelPackage}.${table.dataSourceDir}"/>
+        <property name="daoPackage" value="${targetDaoPackage}.${table.dataSourceDir}"/>
+        <property name="servicePackage" value="${targetServicePackage}.${table.dataSourceDir}"/>
+        <property name="idByFunction" value="true"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+        </plugin>
+
+        <!--&lt;!&ndash;&lt;!&ndash; 类型解析器 &ndash;&gt;&ndash;&gt;-->
+        <!--<javaTypeResolver type="cn.com.youlove.component.generator.MyJavaTypeResolver">-->
+        <!--<property name="forceBigDecimals" value="false" />-->
+        <!--</javaTypeResolver>-->
+
+        <!-- 生成通用DAO插件 -->
+        <plugin type="com.java1234.generator.DaoPlugin">
+            <property name="targetPackage" value="${targetDaoPackage}.${table.dataSourceDir}"/>
+            <property name="targetProject" value="${targetDaoProject}"/>
+            <property name="isCreate" value="${dao.isCreate}"/>
+        </plugin>
+
+        <!-- 生成通用Service插件 -->
+        <plugin type="com.java1234.generator.ServicePlugin">
+            <property name="targetPackage" value="${targetServicePackage}.${table.dataSourceDir}"/>
+            <property name="targetProject" value="${targetServiceProject}"/>
+            <property name="isCreate" value="${service.isCreate}"/>
+        </plugin>
+
+        <!-- 生成Controller插件 -->
+        <plugin type="com.java1234.generator.ControllerPlugin">
+            <property name="targetPackage" value="${targetControllerPackage}.${table.dataSourceDir}"/>
+            <property name="targetProject" value="${targetControllerProject}"/>
+        </plugin>
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 连接信息 -->
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.userName}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <!-- 生成实体 -->
+        <javaModelGenerator targetPackage="${targetModelPackage}.${table.dataSourceDir}"
+                            targetProject="${targetModelProject}">
+            <property name="rootClass" value="${mapper.rootClass}"/>
+        </javaModelGenerator>
+
+        <!-- 映射XML文件 -->
+        <sqlMapGenerator targetPackage="${targetMapperPackage}.${table.dataSourceDir}"
+                         targetProject="${targetJavaProject}"/>
+        <!-- 映射java类-->
+        <javaClientGenerator targetPackage="${targetMapperPackage}.${table.dataSourceDir}"
+                             targetProject="${targetJavaProject}" type="XMLMAPPER">
+            <!--是否允许建立子包（对应MySql的scheme）-->
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- 要生成的那些表 -->
+        <table tableName="${table.tableName}" domainObjectName="${table.entityName}">
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        </table>
+        <!--<table tableName="wd_course" domainObjectName="WdCourse" >-->
+        <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="wd_solr" domainObjectName="WdSolr" >-->
+        <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>

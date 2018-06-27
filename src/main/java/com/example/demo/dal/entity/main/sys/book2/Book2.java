@@ -1,11 +1,11 @@
-package com.example.demo.dal.entity.main.book;
+package com.example.demo.dal.entity.main.sys.book2;
 
 import com.example.demo.dal.entity.base.BaseEntity;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "t_book")
-public class Book extends BaseEntity {
+public class Book2 extends BaseEntity {
     @Id
     @Column(name = "book_id")
     private Long bookId;
