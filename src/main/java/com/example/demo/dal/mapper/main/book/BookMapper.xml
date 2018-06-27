@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dal.mapper.main.book.BookMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.dal.entity.main.book.Book">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="book_id" property="bookId" jdbcType="BIGINT"/>
+        <result column="book_name" property="bookName" jdbcType="VARCHAR"/>
+        <result column="book_author" property="bookAuthor" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <sql id="BASE_TABLE">
+    t_book
+  </sql>
+
+    <sql id="BASE_COLUMN">
+    book_id,book_name,book_author,create_time
+  </sql>
+
+    <select id="selectBooks" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+    </select>
+
+    <insert id="insertBook" parameterType="com.example.demo.dal.entity.main.book.Book">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            book_id,book_name,book_author
+
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            5,#{bookName, jdbcType=VARCHAR},#{bookAuthor, jdbcType=VARCHAR},
+        </trim>
+    </insert>
+</mapper>

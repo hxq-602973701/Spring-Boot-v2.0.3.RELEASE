@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 命名空间必须与接口类保持一致 -->
+<mapper namespace="com.example.demo.dal.mapper.common.CommonMapper">
+
+    <!-- 根据条件获取指定表的数据 -->
+    <select id="sequenceNextval" resultType="java.lang.Long">
+        select sequence_nextval(#{tableName})
+    </select>
+
+    <!-- 根据条件获取指定表的数据 -->
+    <select id="selectByCondition" resultType="java.util.HashMap">
+        <if test="database=='SQLServer'">
+            select
+            <if test="limit != null">
+                top ${limit}
+            </if>
+            *
+            from ${tableName} t
+            <where>
+                <foreach collection="conditionMap" index="key" item="value" separator="and">
+                    ${key} = #{value}
+                </foreach>
+            </where>
+        </if>
+
+        <if test="database=='MySQL'">
+            select
+            *
+            from ${tableName} t
+            <where>
+                <foreach collection="conditionMap" index="key" item="value" separator="and">
+                    ${key} = #{value}
+                </foreach>
+            </where>
+            limit #{limit}
+        </if>
+    </select>
+
+    <!-- 根据条件更新指定表的记录 -->
+    <update id="updateByCondition">
+        update
+        ${tableName}
+        set
+        <foreach collection="updateMap" index="key" item="value" separator=",">
+            ${key} = #{value}
+        </foreach>
+        <where>
+            <foreach collection="conditionMap" index="key" item="value" separator="and">
+                ${key} = #{value}
+            </foreach>
+        </where>
+    </update>
+
+    <!-- 根据条件更新指定表的记录(更新条件使用IN) -->
+    <update id="updateWithInByCondition">
+        update
+        ${tableName}
+        set
+        <foreach collection="updateMap" index="key" item="value" separator=",">
+            ${key} = #{value}
+        </foreach>
+        <where>
+            <foreach collection="conditionMap" index="key" item="values" separator="and">
+                ${key} in (<foreach collection="values" item="item" separator=",">#{item}</foreach>)
+            </foreach>
+        </where>
+    </update>
+
+
+</mapper>
