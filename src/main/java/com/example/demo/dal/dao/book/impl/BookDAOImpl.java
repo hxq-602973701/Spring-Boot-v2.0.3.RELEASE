@@ -11,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
 /**
  * BookDAO
  *
- * @author lt 2018-6-27
+ * @author lt 2018-6-28
  * @version 1.0.0
  * @category 南阳理工学院
  */

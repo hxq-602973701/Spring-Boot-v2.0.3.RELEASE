@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-    <properties resource="myGeneratorConfig.properties"/>
+    <properties resource="generator/myGeneratorConfig.properties"/>
 
     <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
         <!-- TKmybatis配置 -->

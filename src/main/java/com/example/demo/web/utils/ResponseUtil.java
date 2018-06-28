@@ -1,4 +1,4 @@
-package com.example.demo.web.controller.util;
+package com.example.demo.web.utils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;

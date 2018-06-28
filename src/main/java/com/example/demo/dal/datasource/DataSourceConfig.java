@@ -168,14 +168,14 @@ public class DataSourceConfig {
 
 
     /**
-     * 事物
+     * 事务
      *
      * @param dataSource
      * @return
      * @throws Exception
      */
     @Bean
-    public DataSourceTransactionManager transactionManager(MultipleDataSource dataSource) throws Exception {
+    public DataSourceTransactionManager transactionManager(MultipleDataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 }

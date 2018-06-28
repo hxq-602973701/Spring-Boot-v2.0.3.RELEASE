@@ -45,7 +45,7 @@ public class Task {
         System.out.println(Thread.currentThread().getName() + "........task03");
     }
 
-        @Scheduled(cron = "0/1 * * * * ?")
+//        @Scheduled(cron = "0/1 * * * * ?")
     public void task04() {
             logger.info("执行common多数据源...");
             Map<String, Object> conditionMap = new HashMap<>();

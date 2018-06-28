@@ -48,6 +48,20 @@ spring:
           pool-prepared-statements: false
           max-pool-prepared-statement-per-connection-size: 20
 
+#  可以不使用这种注解的方式了
+#    freemarker:
+#      allow-request-override: false
+#      cache: false
+#      check-template-location: false
+#      charset: UTF-8
+#      content-type: text/html; charset=utf-8
+#      expose-request-attributes: false
+#        #是否在model自动把session中的attribute导入进去
+#      expose-session-attributes: false
+#      expose-spring-macro-helpers: false
+#      suffix: .ftl
+#      template-loader-path: classpath:/templates/ftl
+
 
 #pagehelper
 pagehelper:
@@ -62,4 +76,7 @@ pagehelper:
 mybatis:
   mapper-locations: com.example.demo.dal.mapper.*
   type-aliases-package: com.example.demo.dal.mapper.entity
+
+
+
 
