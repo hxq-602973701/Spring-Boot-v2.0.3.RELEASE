@@ -18,7 +18,7 @@ import java.util.Properties;
  */
 @Configuration
 //这种是注解方式
-@ImportResource(locations= {"classpath:/templates/freemarker.xml"})
+//@ImportResource(locations= {"classpath:/templates/freemarker.xml"})
 public class FreeMakerConfig {
 
     /**

@@ -1,7 +1,5 @@
 package com.example.demo.dal.mapper.common;
 
-import com.example.demo.dal.datasource.DataSourceEnum;
-import com.example.demo.dal.datasource.DataSourceType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
