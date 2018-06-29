@@ -7,7 +7,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -18,7 +17,7 @@ final class SpringUtil implements ApplicationContextAware {
     private static ApplicationContext appContext = null;
 
     public SpringUtil() {
-        System.out.println("sdas");
+        System.out.println("SpringUtil加载.....");
     }
 
     public static Object getBean(String beanName) {
@@ -50,6 +49,7 @@ final class SpringUtil implements ApplicationContextAware {
         return WebApplicationContextUtils.getWebApplicationContext(servletContext);
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         appContext = applicationContext;
     }

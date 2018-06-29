@@ -54,7 +54,7 @@ spring:
 #      cache: false
 #      check-template-location: false
 #      charset: UTF-8
-#      content-type: text/html; charset=utf-8
+#      content-type: text/thymeleaf; charset=utf-8
 #      expose-request-attributes: false
 #        #是否在model自动把session中的attribute导入进去
 #      expose-session-attributes: false

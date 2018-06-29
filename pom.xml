@@ -77,8 +77,20 @@
             <optional>true</optional>
             <scope>true</scope>
         </dependency>
+        <!--freeMaker继承配置-->
+        <dependency>
+            <groupId>com.googlecode.rapid-framework</groupId>
+            <artifactId>rapid-core</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+        <!-- freeMarker 继承需要的lang包 缺少的话可能会报错（ClassNotFoundException） -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
 
-
+        <!--commons-lang3包-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

@@ -2,7 +2,6 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 
-
 <generatorConfiguration>
 
     <properties resource="generator/myGeneratorConfig.properties"/>
@@ -30,7 +29,7 @@
         </plugin>
 
         <!--&lt;!&ndash;&lt;!&ndash; 类型解析器 &ndash;&gt;&ndash;&gt;-->
-        <!--<javaTypeResolver type="cn.com.youlove.component.generator.MyJavaTypeResolver">-->
+        <!--<javaTypeResolver type="com.java1234.generator.MyJavaTypeResolver">-->
         <!--<property name="forceBigDecimals" value="false" />-->
         <!--</javaTypeResolver>-->
 

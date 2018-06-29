@@ -1,6 +1,5 @@
 package com.example.demo.dal.utils;
 
-import com.example.demo.dal.utils.Config;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
