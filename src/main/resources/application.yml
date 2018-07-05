@@ -8,6 +8,7 @@ zzp:
 
 #Spring配置
 spring:
+    #多数据源
     datasource:
         name: mysql_test
         #-------------- start ----------------# (1)
@@ -47,6 +48,19 @@ spring:
           #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
           pool-prepared-statements: false
           max-pool-prepared-statement-per-connection-size: 20
+    #Redis缓存
+    redis:
+      database: 0
+      host: 192.168.21.129
+      port: 6379
+      password:
+      timeout: 10000
+    data:
+    #MogoDB
+      mongodb:
+        uri: mongodb://192.168.21.129
+        port: 27017
+        database: test
 
 #  可以不使用这种注解的方式了
 #    freemarker:
