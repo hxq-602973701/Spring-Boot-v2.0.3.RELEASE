@@ -6,6 +6,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +28,18 @@ public class HelloController {
     @Autowired
     private Environment env;
 
+    //============================两种方式（MongoRepository、MongoTemplate）========
     /**
-     * 用户
+     * MongoRepository
      */
     @Autowired
-    private UserRepository repository;
+    private UserRepository mongoRepository;
+
+    /**
+     * MongoTemplate
+     */
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     /**
      * 整合thymeleaf
@@ -119,21 +129,23 @@ public class HelloController {
      */
     @RequestMapping("/mongodb")
     public void mongodb() {
-        repository.deleteAll();
+        mongoRepository.deleteAll();
 
-        repository.save(new User(1, "lt", 19));
-        repository.save(new User(2, "xb", 20));
+        //使用了lombok方式 简化
+        mongoRepository.save(new User(1, "lt", 19));
+        mongoRepository.save(new User(2, "xb", 20));
 
         System.out.println("User found with findAll():");
         System.out.println("-------------------------------");
-        for (User user : repository.findAll()) {
+        for (User user : mongoRepository.findAll()) {
             System.out.println(user);
         }
         System.out.println("------------------------");
-
+        User user = mongoTemplate.findOne(new Query(Criteria.where("id").is(1)), User.class);
+        System.out.println(user);
         System.out.println("User found with findByName('name1'):");
         System.out.println("--------------------------------");
-        System.out.println(repository.findByName("name1"));
+        System.out.println(mongoRepository.findByName("name1"));
     }
 
 }
