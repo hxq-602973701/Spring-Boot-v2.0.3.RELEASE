@@ -2,7 +2,7 @@ Spring-boot  (v2.0.3.RELEASE)
 --
 # 这是一个简单的Spring-boot项目搭建例子,整合了平时项目中常用的功能,方便以后回来查阅<br><br>
 
-* 整合freemaker以及thymeleaf 用到了freemarker继承覆盖指令、全局静态方法与变量的使用<br><br>
+* 整合freemaker以及thymeleaf 用到了freemarker继承覆盖指令、全局静态方法与变量的使用<br>
 
   * freemarker之调用JAVA静态方法和静态属性：https://blog.csdn.net/u014512645/article/details/51240492<br>
   * Spring Boot使用Freemarker继承：https://www.cnblogs.com/gantoday/p/7854096.html<br><br>
