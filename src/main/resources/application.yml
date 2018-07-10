@@ -55,12 +55,24 @@ spring:
       port: 6379
       password:
       timeout: 10000
+    #elasticsearch
+#    elasticsearch:
+#      jest:
+#        uris: http://192.168.21.129:9200
+#        username: es
+#        password:
+#        read-timeout: 5000
     data:
     #MogoDB
       mongodb:
         uri: mongodb://192.168.21.129
         port: 27017
         database: test
+      elasticsearch:
+            cluster-name: elasticsearch
+            cluster-nodes: 192.168.21.129:9200
+            repositories:
+              enabled: true
 
 #  可以不使用这种注解的方式了
 #    freemarker:
