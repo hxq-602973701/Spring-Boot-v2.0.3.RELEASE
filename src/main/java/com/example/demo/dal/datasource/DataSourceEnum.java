@@ -13,7 +13,9 @@ public enum DataSourceEnum {
      */
     MAIN(DBTypeEnum.MySQL),
 
-    SD(DBTypeEnum.MySQL);
+    SD(DBTypeEnum.MySQL),
+
+    ES(DBTypeEnum.Es);
 
     /**
      * 数据库类型

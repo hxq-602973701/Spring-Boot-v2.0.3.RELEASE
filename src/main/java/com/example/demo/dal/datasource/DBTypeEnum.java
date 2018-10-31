@@ -21,7 +21,9 @@ public enum DBTypeEnum {
     /**
      * SQLServer数据库类型
      */
-    SQLServer;
+    SQLServer,
+
+    Es;
 
 
     private DBTypeEnum() {

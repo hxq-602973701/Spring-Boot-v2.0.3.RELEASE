@@ -79,7 +79,7 @@ public class DataSourceConfig {
     private Integer maxPoolPreparedStatementPerConnectionSize;
 
     /**
-     * 通过Spring JDBC 快速创建 DataSource
+     * 通过Spring JDBC 快速创建 masterDataSource
      *
      * @return
      */
@@ -90,6 +90,17 @@ public class DataSourceConfig {
         return DataSourceBuilder.create().build();
     }
 
+    /**
+     * 通过Spring JDBC 快速创建 esDataSource
+     *
+     * @return
+     */
+    @Bean(name = "esDataSource")
+    @Qualifier("esDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.es")
+    public DataSource esDataSource() {
+        return DataSourceBuilder.create().build();
+    }
 
     /**
      * 手动创建DruidDataSource,通过DataSourceProperties 读取配置
@@ -136,10 +147,12 @@ public class DataSourceConfig {
     @Bean
     @Primary
     public MultipleDataSource dataSource(@Qualifier("masterDataSource") DataSource master,
-                                         @Qualifier("slaveDataSource") DataSource slave) {
+                                         @Qualifier("slaveDataSource") DataSource slave,
+                                         @Qualifier("esDataSource") DataSource es) {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put("MAIN", master);
         targetDataSources.put("SD", slave);
+        targetDataSources.put("ES", es);
 
 
         MultipleDataSource dataSource = new MultipleDataSource();
@@ -158,9 +171,10 @@ public class DataSourceConfig {
      */
     @Bean
     public SqlSessionFactory sqlSessionFactory(@Qualifier("masterDataSource") DataSource myTestDbDataSource,
-                                               @Qualifier("slaveDataSource") DataSource myTestDb2DataSource) throws Exception {
+                                               @Qualifier("slaveDataSource") DataSource myTestDb2DataSource,
+                                               @Qualifier("esDataSource") DataSource myTestDb3DataSource) throws Exception {
         SqlSessionFactoryBean fb = new SqlSessionFactoryBean();
-        fb.setDataSource(this.dataSource(myTestDbDataSource, myTestDb2DataSource));
+        fb.setDataSource(this.dataSource(myTestDbDataSource, myTestDb2DataSource,myTestDb3DataSource));
         fb.setTypeAliasesPackage(env.getProperty("mybatis.type-aliases-package"));
         fb.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(env.getProperty("mybatis.mapper-locations")));
         return fb.getObject();

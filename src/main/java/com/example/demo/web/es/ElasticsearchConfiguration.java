@@ -73,6 +73,7 @@ public class ElasticsearchConfiguration implements FactoryBean<RestHighLevelClie
     }
 
     private RestHighLevelClient buildClient() {
+
         try {
             restHighLevelClient = new RestHighLevelClient(
                     RestClient.builder(
