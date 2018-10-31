@@ -52,6 +52,7 @@ import org.elasticsearch.search.suggest.Suggest;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilders;
 import org.elasticsearch.search.suggest.SuggestionBuilder;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.term.TermSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -496,7 +497,7 @@ public class EsController {
             jsonMap.put("userName", str.getXm());
             jsonMap.put("address", str.getHjdxz());
             request.add(new IndexRequest("test15", "doc", String.valueOf(a))
-                    .source(XContentType.JSON, "filed", jsonMap, "analyzer", "ik_max_word","type","text"));
+                    .source(XContentType.JSON, "filed", jsonMap, "analyzer", "ik_max_word", "type", "text"));
         }
         ActionListener<BulkResponse> listener = new ActionListener<BulkResponse>() {
             @Override
@@ -535,7 +536,6 @@ public class EsController {
      */
     @RequestMapping("/es/suggestions")
     public void esSuggestions() {
-
 
 
         SearchRequest searchRequest = new SearchRequest("book01");
@@ -624,11 +624,18 @@ public class EsController {
 
 
     /**
-     * 整合es--测试自动补全
+     * 整合es第一步  建立索引
      */
     @RequestMapping("/es/sadas")
     public void esSuggestions1() throws IOException {
 
+        //建立索引
+//        Map<String, Object> jsonMap = new HashMap<>();
+//        IndexRequest indexRequest = new IndexRequest("news_website1", "news");
+//        indexRequest.source(jsonMap);
+//        IndexResponse indexResponse = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+
+        //设置mapping
 //        XContentBuilder builder = XContentFactory.jsonBuilder();
 //        builder.startObject().
 //                startObject("news").
@@ -651,26 +658,22 @@ public class EsController {
 //        PutMappingResponse putMappingResponse = restHighLevelClient.indices().putMapping(putMappingRequest,RequestOptions.DEFAULT);
 
 
-//        Map<String, Object> jsonMap = new HashMap<>();
-        IndexRequest indexRequest = new IndexRequest("news_website1", "news");
-//        indexRequest.source(jsonMap);
-//
-//
-        Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("title", "大话西游电影");
-        jsonMap.put("content", "大话西游的电影时隔20年即将在2017年4月重映");
-        indexRequest.source(jsonMap);
-//        Map<String, Object> jsonMap1 = new HashMap<>();
-//        jsonMap1.put("title", "大话西游手游");
-//        jsonMap1.put("content", "网易游戏近日出品了大话西游经典IP的手游，正在火爆内测中");
-//        indexRequest.source(jsonMap1);
-//        Map<String, Object> jsonMap2 = new HashMap<>();
-//        jsonMap2.put("title", "大话西游小说");
-//        jsonMap2.put("content", "某知名网络小说作家已经完成了大话西游同名小说的出版");
+        //插入数据
+        Map<String, Object> jsonMap3 = new HashMap<>();
+        jsonMap3.put("title", "大话西游电影");
+        jsonMap3.put("content", "大话西游的电影时隔20年即将在2017年4月重映");
+        Map<String, Object> jsonMap1 = new HashMap<>();
+        jsonMap1.put("title", "大话西游手游");
+        jsonMap1.put("content", "网易游戏近日出品了大话西游经典IP的手游，正在火爆内测中");
+        Map<String, Object> jsonMap2 = new HashMap<>();
+        jsonMap2.put("title", "大话西游小说");
+        jsonMap2.put("content", "某知名网络小说作家已经完成了大话西游同名小说的出版");
+        BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.add(new IndexRequest("news_website1", "news").source(jsonMap1));
+        bulkRequest.add(new IndexRequest("news_website1", "news").source(jsonMap2));
+        bulkRequest.add(new IndexRequest("news_website1", "news").source(jsonMap3));
+        BulkResponse bulkItemResponses = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
 
-//            indexRequest.source(jsonMap2);
-        IndexResponse indexResponse = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-        //
     }
 
 
@@ -686,7 +689,7 @@ public class EsController {
         searchRequest.types("news");
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        SuggestionBuilder completionSuggestionBuilder = SuggestBuilders.completionSuggestion("title.suggest").prefix("大话西游").analyzer("ik_max_word");
+        SuggestionBuilder completionSuggestionBuilder = SuggestBuilders.completionSuggestion("title.filed.suggest").prefix("大话西游").analyzer("ik_max_word");
 
         SuggestBuilder suggestBuilder = new SuggestBuilder();
         suggestBuilder.addSuggestion("suggest_user", completionSuggestionBuilder);
@@ -702,9 +705,9 @@ public class EsController {
             e.printStackTrace();
         }
         Suggest suggest = searchResponse.getSuggest();
-        TermSuggestion termSuggestion = suggest.getSuggestion("suggest_user");
-        for (TermSuggestion.Entry entry : termSuggestion.getEntries()) {
-            for (TermSuggestion.Entry.Option option : entry) {
+        CompletionSuggestion completionSuggestion = suggest.getSuggestion("suggest_user");
+        for (CompletionSuggestion.Entry entry : completionSuggestion.getEntries()) {
+            for (CompletionSuggestion.Entry.Option option : entry) {
                 String suggestText = option.getText().string();
             }
         }
