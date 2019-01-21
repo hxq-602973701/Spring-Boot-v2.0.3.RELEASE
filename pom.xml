@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>com.hyf</groupId>
+    <artifactId>spring-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>demo</name>
+    <name>spring-boot-web</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -184,18 +184,32 @@
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>6.3.1</version>
+            <version>6.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>6.3.1</version>
+            <version>6.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
+            <version>6.4.0</version>
+        </dependency>
+        <!--jdbc连接-->
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>jdbc</artifactId>
             <version>6.3.1</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.10</version>
+        </dependency>
+
         <!--<dependency>-->
         <!--<groupId>org.elasticsearch.client</groupId>-->
         <!--<artifactId>elasticsearch-rest-client-sniffer</artifactId>-->
@@ -222,8 +236,49 @@
             <version>4.12</version>
         </dependency>
 
+        <!--es 报警插件watcher-->
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch.plugin</groupId>-->
+            <!--<artifactId>watcher</artifactId>-->
+            <!--<version>2.4.6</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.es.watcher</groupId>
+            <artifactId>es</artifactId>
+            <version>2.4.6</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/watcher-2.4.6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
 
     </dependencies>
+
+    <!--支持elasticsearch6.3.1 jdbc-->
+            <repositories>
+                <repository>
+                    <id>elasticsearch-releases</id>
+                    <url>http://artifacts.elastic.co/maven</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+
 
     <build>
         <plugins>

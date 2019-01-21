@@ -3,12 +3,11 @@ package com.example.demo.web;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
 import com.example.demo.dal.entity.main.es.Test2;
-import com.example.demo.dal.entity.main.es.VO;
+import com.google.common.collect.Lists;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
@@ -252,7 +251,6 @@ public class EsController {
         //创建searchRequest和searchSourceBuilder
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
         //设置index
         searchRequest("book01");
 
@@ -267,7 +265,7 @@ public class EsController {
         // 不带分词模糊查询
 //        searchSourceBuilder.query(QueryBuilders.termQuery("book_author", "小子"));
         searchSourceBuilder.from(0);
-        searchSourceBuilder.size(5);
+        searchSourceBuilder.size(1);
         //排序
         searchSourceBuilder.sort(new FieldSortBuilder("create_time").order(SortOrder.ASC));
 
@@ -280,11 +278,11 @@ public class EsController {
 
         //高亮
         HighlightBuilder highlightBuilder = new HighlightBuilder();
-        HighlightBuilder.Field highlightTitle = new HighlightBuilder.Field("book_author");
+        HighlightBuilder.Field highlightTitle = new HighlightBuilder.Field("*");
         highlightTitle.highlighterType("unified");
         highlightBuilder.field(highlightTitle);
-        HighlightBuilder.Field highlightUser = new HighlightBuilder.Field("user");
-        highlightBuilder.field(highlightUser);
+//        HighlightBuilder.Field highlightUser = new HighlightBuilder.Field("user");
+//        highlightBuilder.field(highlightUser);
         searchSourceBuilder.highlighter(highlightBuilder);
 
         //添加到源
@@ -296,13 +294,17 @@ public class EsController {
             public void onResponse(SearchResponse searchResponse) {
                 System.out.println("查询返回结果" + searchResponse);
 
+
                 //获取高亮结果
                 SearchHits hits = searchResponse.getHits();
+                System.out.println(hits.getTotalHits());
                 for (SearchHit hit : hits.getHits()) {
                     Map<String, HighlightField> highlightFields = hit.getHighlightFields();
-                    HighlightField highlight = highlightFields.get("book_author");
-                    Text[] fragments = highlight.fragments();
-                    String fragmentString = fragments[0].string();
+                    for (String str : highlightFields.keySet()) {
+                        HighlightField highlightField = highlightFields.get(str);
+                        Text[] fragments = highlightField.fragments();
+                        String fragmentString = fragments[0].string();
+                    }
                 }
 
             }
@@ -312,7 +314,7 @@ public class EsController {
                 System.out.println("错误消息" + e);
             }
         };
-        restHighLevelClient.searchAsync(searchRequest, searchResponseActionListener);
+        restHighLevelClient.searchAsync(searchRequest, RequestOptions.DEFAULT, searchResponseActionListener);
     }
 
     /**
@@ -439,8 +441,9 @@ public class EsController {
 
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        TermsAggregationBuilder aggregation = AggregationBuilders.terms("company")
-                .field("book01.book_id");
+
+        TermsAggregationBuilder aggregation = AggregationBuilders.terms("messages").field("message").size(10);
+//                .field("book01.book_id");
         aggregation.subAggregation(AggregationBuilders.avg("average_age")
                 .field("book_id"));
         searchSourceBuilder.aggregation(aggregation);
@@ -634,45 +637,46 @@ public class EsController {
 //        IndexRequest indexRequest = new IndexRequest("news_website1", "news");
 //        indexRequest.source(jsonMap);
 //        IndexResponse indexResponse = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-
+        CreateIndexRequest createIndexRequest = new CreateIndexRequest("news_website");
+        restHighLevelClient.indices().create(createIndexRequest,RequestOptions.DEFAULT);
         //设置mapping
 //        XContentBuilder builder = XContentFactory.jsonBuilder();
 //        builder.startObject().
 //                startObject("news").
 //                startObject("properties").
-//                startObject("title").field("type","text").field("analyzer", "ik_max_word").
+//                startObject("title").field("type", "text").field("analyzer", "ik_max_word").
 //                startObject("fields").
-//                startObject("suggest").field("type", "completion").field("analyzer","ik_max_word").
+//                startObject("suggest").field("type", "completion").field("analyzer", "ik_max_word").
 //                endObject().
 //                endObject().
 //                endObject().
-//                startObject("content").field("type","text").field("analyzer","ik_max_word").
+//                startObject("content").field("type", "text").field("analyzer", "ik_max_word").
 //                endObject().
 //                endObject().
 //                endObject().
 //                endObject();
 //
-//        PutMappingRequest putMappingRequest = new PutMappingRequest("news_website1");
+//        PutMappingRequest putMappingRequest = new PutMappingRequest("news_website");
 //        putMappingRequest.type("news");
 //        putMappingRequest.source(builder);
-//        PutMappingResponse putMappingResponse = restHighLevelClient.indices().putMapping(putMappingRequest,RequestOptions.DEFAULT);
+//        PutMappingResponse putMappingResponse = restHighLevelClient.indices().putMapping(putMappingRequest, RequestOptions.DEFAULT);
 
 
         //插入数据
-        Map<String, Object> jsonMap3 = new HashMap<>();
-        jsonMap3.put("title", "大话西游电影");
-        jsonMap3.put("content", "大话西游的电影时隔20年即将在2017年4月重映");
-        Map<String, Object> jsonMap1 = new HashMap<>();
-        jsonMap1.put("title", "大话西游手游");
-        jsonMap1.put("content", "网易游戏近日出品了大话西游经典IP的手游，正在火爆内测中");
-        Map<String, Object> jsonMap2 = new HashMap<>();
-        jsonMap2.put("title", "大话西游小说");
-        jsonMap2.put("content", "某知名网络小说作家已经完成了大话西游同名小说的出版");
-        BulkRequest bulkRequest = new BulkRequest();
-        bulkRequest.add(new IndexRequest("news_website1", "news").source(jsonMap1));
-        bulkRequest.add(new IndexRequest("news_website1", "news").source(jsonMap2));
-        bulkRequest.add(new IndexRequest("news_website1", "news").source(jsonMap3));
-        BulkResponse bulkItemResponses = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+//        Map<String, Object> jsonMap3 = new HashMap<>();
+//        jsonMap3.put("title", "大话西游电影");
+//        jsonMap3.put("content", "大话西游的电影时隔20年即将在2017年4月重映");
+//        Map<String, Object> jsonMap1 = new HashMap<>();
+//        jsonMap1.put("title", "大话西游手游");
+//        jsonMap1.put("content", "网易游戏近日出品了大话西游经典IP的手游，正在火爆内测中");
+//        Map<String, Object> jsonMap2 = new HashMap<>();
+//        jsonMap2.put("title", "大话西游小说");
+//        jsonMap2.put("content", "某知名网络小说作家已经完成了大话西游同名小说的出版");
+//        BulkRequest bulkRequest = new BulkRequest();
+//        bulkRequest.add(new IndexRequest("news_website", "news").source(jsonMap1));
+//        bulkRequest.add(new IndexRequest("news_website", "news").source(jsonMap2));
+//        bulkRequest.add(new IndexRequest("news_website", "news").source(jsonMap3));
+//        BulkResponse bulkItemResponses = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
 
     }
 
@@ -681,7 +685,7 @@ public class EsController {
      * 整合es--测试自动补全
      */
     @RequestMapping("/es/sss")
-    public void esSuggestions2() throws IOException {
+    public List<String> esSuggestions2() {
 
         SearchRequest searchRequest = new SearchRequest("news_website1");
 
@@ -689,7 +693,7 @@ public class EsController {
         searchRequest.types("news");
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        SuggestionBuilder completionSuggestionBuilder = SuggestBuilders.completionSuggestion("title.filed.suggest").prefix("大话西游").analyzer("ik_max_word");
+        SuggestionBuilder completionSuggestionBuilder = SuggestBuilders.completionSuggestion("title.suggest").prefix("西游").analyzer("ik_max_word");
 
         SuggestBuilder suggestBuilder = new SuggestBuilder();
         suggestBuilder.addSuggestion("suggest_user", completionSuggestionBuilder);
@@ -706,11 +710,15 @@ public class EsController {
         }
         Suggest suggest = searchResponse.getSuggest();
         CompletionSuggestion completionSuggestion = suggest.getSuggestion("suggest_user");
+        List<String> resultList = null;
         for (CompletionSuggestion.Entry entry : completionSuggestion.getEntries()) {
+            resultList = Lists.newArrayList();
             for (CompletionSuggestion.Entry.Option option : entry) {
                 String suggestText = option.getText().string();
+                resultList.add(suggestText);
             }
         }
+        return resultList;
 
     }
 
