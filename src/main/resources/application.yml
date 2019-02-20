@@ -13,8 +13,8 @@ spring:
         name: mysql_test
         #-------------- start ----------------# (1)
         master:
-          #基本属性--注意，这里的为【jdbcurl】-- 默认使用HikariPool作为数据库连接池
-          jdbcurl: jdbc:mysql://127.0.0.1:3306/db_book?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+          #基本属性--注意，这里的为【jdbc-url】-- 默认使用HikariPool作为数据库连接池
+          jdbc-url: jdbc:mysql://127.0.0.1:3306/db_book?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
           username: root
           password: 1234
           driver-class-name: com.mysql.jdbc.Driver
@@ -25,7 +25,7 @@ spring:
           password: 1234
           driver-class-name: com.mysql.jdbc.Driver
         es:
-          jdbcurl: jdbc:es://192.168.21.129:9200
+          jdbc-url: jdbc:es://192.168.21.129:9200
           username:
           password:
           driver-class-name: org.elasticsearch.xpack.sql.jdbc.jdbc.JdbcDriver
@@ -59,6 +59,10 @@ spring:
       port: 6379
       password:
       timeout: 10000
+    #缓存配置
+    cache:
+        type: redis
+        cache-names: mysiteforme
     #elasticsearch
 #    elasticsearch:
 #      jest:

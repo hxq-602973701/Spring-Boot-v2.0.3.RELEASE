@@ -23,7 +23,7 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         if (dataSourceKey.get() == null) {
-            return DataSourceEnum.MAIN;
+            return DataSourceEnum.MAIN.toString();
         }
         return dataSourceKey.get().name();
     }

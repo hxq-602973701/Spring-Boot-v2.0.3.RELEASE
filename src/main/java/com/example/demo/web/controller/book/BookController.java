@@ -5,6 +5,7 @@ import com.example.demo.service.book.BookService;
 import com.example.demo.web.utils.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +50,13 @@ public class BookController {
      * @param model
      * @return
      */
+
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String showFtl(Model model) {
         model.addAttribute("username", "ftl");
+        Book book = new Book();
+        book.setBookId(1L);
+        List<Book> bookList = bookService.select11(book);
         return "/book/book_list";
     }
 
@@ -75,8 +80,12 @@ public class BookController {
      * @return
      */
     @RequestMapping(value = "/world", method = RequestMethod.GET)
+    @Cacheable(value = "mysiteforme", key = "book111")
     public String showJsp(Model model) {
         model.addAttribute("username", "jsp");
+        Book book = new Book();
+        book.setBookId(1L);
+        List<Book> bookList = bookService.select(book);
         return "world";
     }
 
@@ -88,12 +97,24 @@ public class BookController {
      * @param response
      * @throws Exception
      */
+    @Cacheable(value = "mysiteforme", key = "book111")
     @RequestMapping(value = "/book_list", method = RequestMethod.GET)
-    public void listAllBookListApi(final Model model, Book book, HttpServletResponse response) throws Exception {
+    public String listAllBookListApi(final Model model, Book book, HttpServletResponse response) throws Exception {
         List<Book> bookList = bookService.select(book);
         objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(bookList);
-        ResponseUtil.write(json, response);
+        return json;
+    }
+
+    @RequestMapping(value = "/book_list_id", method = RequestMethod.GET)
+    public Integer findById(final Long id) {
+        System.out.println("cache miss, invoke find by id, id:" + id);
+        Integer a = bookService.getById(id);
+        if (a == 365) {
+
+            return 362;
+        }
+        return 362;
     }
 
     /**

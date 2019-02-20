@@ -86,7 +86,7 @@ public class DataSourceConfig {
     @Bean(name = "masterDataSource")
     @Qualifier("masterDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.master")
-    public DataSource masterDataSource() {
+    public DataSource masterDataSource(){
         return DataSourceBuilder.create().build();
     }
 
