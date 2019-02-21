@@ -10,6 +10,7 @@ Spring-boot  (v2.0.3.RELEASE)
 * 整合mybatis配置多数据源<br>
 
   * [springboot2.0 mybatis 使用多数据源](https://winterchen.com/2018/05/30/spring-boot-mybatis-mutil-database/)<br><br>
+  * 整合druid数据源监控<br><br>
   
 * 整合org.mybatis.generator自动生成dao、service、entity<br>
 
@@ -23,6 +24,7 @@ Spring-boot  (v2.0.3.RELEASE)
 
   * [Centos7下安装配置Redis4.0.1](https://blog.csdn.net/u011342403/article/details/78572313)<br>
   * [Spring Boot整合redis](https://blog.csdn.net/qq_28009065/article/details/79062130)<br><br>
+  * 整合Spring-cache和redis 直接使用注解完成缓存操作，低耦合<br><br>
   
 * 整合Mongodb非关系型数据库<br>
 
@@ -31,4 +33,8 @@ Spring-boot  (v2.0.3.RELEASE)
   
 * 整合logback日志框架<br>
 
-  * [springboot整合logback日志](https://blog.csdn.net/zl_1079167478/article/details/72396066)
+  * [springboot整合logback日志](https://blog.csdn.net/zl_1079167478/article/details/72396066)<br><br>
+  
+* 整合ElasticSearch6.3.2<br>
+
+   * 包含各种索引crud、以及搜索、预测<br><br>
