@@ -6,7 +6,7 @@ import com.example.demo.dal.entity.main.book.Book;
 /**
  * BookDAO
  *
- * @author lt 2018-6-28
+ * @author lt 2019-2-21
  * @version 1.0.0
  * @category 南阳理工学院
  */

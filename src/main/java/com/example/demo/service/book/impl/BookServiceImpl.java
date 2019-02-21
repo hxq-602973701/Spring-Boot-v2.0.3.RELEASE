@@ -60,7 +60,7 @@ public class BookServiceImpl extends BaseServiceImpl<Book> implements BookServic
         List<Book> books = bookDAO.select(book);
         System.out.println("不使用缓存了");
         return books;
-    }
+}
 }
 
 

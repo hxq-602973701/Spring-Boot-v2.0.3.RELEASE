@@ -103,7 +103,7 @@ public class BookController {
         List<Book> bookList = bookService.select(book);
         objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(bookList);
-        ResponseUtil.write(json, response);
+        ResponseUtil.write(json,response);
     }
 
     @RequestMapping(value = "/book_list_id", method = RequestMethod.GET)

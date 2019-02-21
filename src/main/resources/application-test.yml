@@ -1,0 +1,117 @@
+#Server配置
+server:
+  port: 8084
+
+#常量配置
+zzp:
+  name: 辣条
+
+#Spring配置
+spring:
+    #多数据源
+    datasource:
+        name: mysql_test
+        #-------------- start ----------------# (1)
+        master:
+          #基本属性--注意，这里的为【jdbc-url】-- 默认使用HikariPool作为数据库连接池
+          url: jdbc:mysql://127.0.0.1:3306/db_book?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+          username: root
+          password: 1234
+          driver-class-name: com.mysql.jdbc.Driver
+        slave:
+          #基本属性--注意，这里为 【url】-- 使用 druid 作为数据库连接池
+          url: jdbc:mysql://127.0.0.1:3306/db_news?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+          username: root
+          password: 1234
+          driver-class-name: com.mysql.jdbc.Driver
+        es:
+          jdbc-url: jdbc:es://192.168.21.129:9200
+          username:
+          password:
+          driver-class-name: org.elasticsearch.xpack.sql.jdbc.jdbc.JdbcDriver
+
+        #-------------- end ----------------#
+        #druid相关配置
+        druid:
+          #监控统计拦截的filters
+          filters: stat,wall,logback
+          #配置初始化大小/最小/最大
+          initial-size: 1
+          min-idle: 1
+          max-active: 20
+          #获取连接等待超时时间
+          max-wait: 60000
+          #间隔多久进行一次检测，检测需要关闭的空闲连接
+          time-between-eviction-runs-millis: 60000
+          #一个连接在池中最小生存的时间
+          min-evictable-idle-time-millis: 300000
+          validation-query: SELECT 'x'
+          test-while-idle: true
+          test-on-borrow: false
+          test-on-return: false
+          #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: 20
+    #Redis缓存
+    redis:
+      database: 0
+      host: 192.168.21.129
+      port: 6379
+      password:
+      timeout: 10000
+    #缓存配置
+    cache:
+        type: redis
+        cache-names: mysiteforme
+    #elasticsearch
+#    elasticsearch:
+#      jest:
+#        uris: http://192.168.21.129:9200
+#        username: es
+#        password:
+#        read-timeout: 5000
+    data:
+    #MogoDB
+      mongodb:
+        uri: mongodb://192.168.21.129
+        port: 27017
+        database: test
+      elasticsearch:
+        cluster-name: elasticsearch
+        cluster-nodes: 192.168.21.129:9200
+        repositories:
+          enabled: true
+
+
+#  可以不使用这种注解的方式了
+#    freemarker:
+#      allow-request-override: false
+#      cache: false
+#      check-template-location: false
+#      charset: UTF-8
+#      content-type: text/thymeleaf; charset=utf-8
+#      expose-request-attributes: false
+#        #是否在model自动把session中的attribute导入进去
+#      expose-session-attributes: false
+#      expose-spring-macro-helpers: false
+#      suffix: .ftl
+#      template-loader-path: classpath:/templates/ftl
+
+
+#pagehelper
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+    returnPageInfo: check
+
+
+#Mybatis配置
+mybatis:
+  mapper-locations: com.example.demo.dal.mapper.*
+  type-aliases-package: com.example.demo.dal.mapper.entity
+
+
+
+
