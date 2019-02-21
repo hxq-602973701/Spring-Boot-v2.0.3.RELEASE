@@ -56,7 +56,7 @@ public class BookController {
         model.addAttribute("username", "ftl");
         Book book = new Book();
         book.setBookId(1L);
-        List<Book> bookList = bookService.select11(book);
+//        List<Book> bookList = bookService.select11(book);
         return "/book/book_list";
     }
 
@@ -99,11 +99,11 @@ public class BookController {
      */
     @Cacheable(value = "mysiteforme", key = "book111")
     @RequestMapping(value = "/book_list", method = RequestMethod.GET)
-    public String listAllBookListApi(final Model model, Book book, HttpServletResponse response) throws Exception {
+    public void listAllBookListApi(final Model model, Book book, HttpServletResponse response) throws Exception {
         List<Book> bookList = bookService.select(book);
         objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(bookList);
-        return json;
+        ResponseUtil.write(json, response);
     }
 
     @RequestMapping(value = "/book_list_id", method = RequestMethod.GET)

@@ -14,7 +14,7 @@ spring:
         #-------------- start ----------------# (1)
         master:
           #基本属性--注意，这里的为【jdbc-url】-- 默认使用HikariPool作为数据库连接池
-          jdbc-url: jdbc:mysql://127.0.0.1:3306/db_book?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+          url: jdbc:mysql://127.0.0.1:3306/db_book?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
           username: root
           password: 1234
           driver-class-name: com.mysql.jdbc.Driver
@@ -34,7 +34,7 @@ spring:
         #druid相关配置
         druid:
           #监控统计拦截的filters
-          filters: stat,wall
+          filters: stat,wall,logback
           #配置初始化大小/最小/最大
           initial-size: 1
           min-idle: 1

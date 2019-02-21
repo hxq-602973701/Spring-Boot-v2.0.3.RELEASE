@@ -79,42 +79,16 @@ public class DataSourceConfig {
     private Integer maxPoolPreparedStatementPerConnectionSize;
 
     /**
-     * 通过Spring JDBC 快速创建 masterDataSource
+     * 通过Spring JDBC 快速创建 masterDataSource（使用 druid 作为数据库连接池）
      *
      * @return
      */
     @Bean(name = "masterDataSource")
     @Qualifier("masterDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.master")
-    public DataSource masterDataSource(){
-        return DataSourceBuilder.create().build();
-    }
-
-    /**
-     * 通过Spring JDBC 快速创建 esDataSource
-     *
-     * @return
-     */
-    @Bean(name = "esDataSource")
-    @Qualifier("esDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.es")
-    public DataSource esDataSource() {
-        return DataSourceBuilder.create().build();
-    }
-
-    /**
-     * 手动创建DruidDataSource,通过DataSourceProperties 读取配置
-     *
-     * @return
-     * @throws SQLException
-     */
-    @Bean(name = "slaveDataSource")
-    @Qualifier("slaveDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.slave")
-    public DataSource slaveDataSource() throws SQLException {
-
+    public DataSource masterDataSource()  throws SQLException {
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setFilters(filters);
+
         dataSource.setUrl(properties.getUrl());
         dataSource.setDriverClassName(properties.getDriverClassName());
         dataSource.setUsername(properties.getUsername());
@@ -131,6 +105,52 @@ public class DataSourceConfig {
         dataSource.setTestOnReturn(testOnReturn);
         dataSource.setPoolPreparedStatements(poolPreparedStatements);
         dataSource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
+        dataSource.setFilters(filters);
+        return dataSource;
+    }
+
+    /**
+     * 通过Spring JDBC 快速创建 esDataSource（这个是使用HikariPool作为数据库连接池）
+     *
+     * @return
+     */
+    @Bean(name = "esDataSource")
+    @Qualifier("esDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.es")
+    public DataSource esDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    /**
+     * 手动创建DruidDataSource,通过DataSourceProperties 读取配置（使用 druid 作为数据库连接池）
+     *
+     * @return
+     * @throws SQLException
+     */
+    @Bean(name = "slaveDataSource")
+    @Qualifier("slaveDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.slave")
+    public DataSource slaveDataSource() throws SQLException {
+
+        DruidDataSource dataSource = new DruidDataSource();
+
+        dataSource.setUrl(properties.getUrl());
+        dataSource.setDriverClassName(properties.getDriverClassName());
+        dataSource.setUsername(properties.getUsername());
+        dataSource.setPassword(properties.getPassword());
+        dataSource.setInitialSize(initialSize);
+        dataSource.setMinIdle(minIdle);
+        dataSource.setMaxActive(maxActive);
+        dataSource.setMaxWait(maxWait);
+        dataSource.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+        dataSource.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+        dataSource.setValidationQuery(validationQuery);
+        dataSource.setTestWhileIdle(testWhileIdle);
+        dataSource.setTestOnBorrow(testOnBorrow);
+        dataSource.setTestOnReturn(testOnReturn);
+        dataSource.setPoolPreparedStatements(poolPreparedStatements);
+        dataSource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
+        dataSource.setFilters(filters);
         return dataSource;
     }
 
