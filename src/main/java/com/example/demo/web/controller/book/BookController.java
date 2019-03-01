@@ -1,18 +1,26 @@
 package com.example.demo.web.controller.book;
 
 import com.example.demo.dal.entity.main.book.Book;
+import com.example.demo.dal.shiro.AjaxResult;
 import com.example.demo.service.book.BookService;
 import com.example.demo.web.utils.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -22,6 +30,10 @@ import java.util.List;
 @Controller
 public class BookController {
 
+    /**
+     * 日志记录器
+     */
+    private static Logger logger = LoggerFactory.getLogger(BookController.class);
     /**
      * 图书Service
      */
@@ -41,7 +53,7 @@ public class BookController {
      */
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String showIndex(Model model) {
-        return "index";
+        return "index2";
     }
 
     /**
@@ -51,11 +63,13 @@ public class BookController {
      * @return
      */
 
+    @RequiresPermissions("system:menu:remove")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String showFtl(Model model) {
         model.addAttribute("username", "ftl");
         Book book = new Book();
         book.setBookId(1L);
+        //TODO 加了下边这句运行不成功
 //        List<Book> bookList = bookService.select11(book);
         return "/book/book_list";
     }
@@ -103,7 +117,7 @@ public class BookController {
         List<Book> bookList = bookService.select(book);
         objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(bookList);
-        ResponseUtil.write(json,response);
+        ResponseUtil.write(json, response);
     }
 
     @RequestMapping(value = "/book_list_id", method = RequestMethod.GET)
@@ -125,6 +139,7 @@ public class BookController {
      * @param response
      * @throws Exception
      */
+    @RequiresPermissions("system:menu:remove")
     @RequestMapping(value = "/book_pageInfo_List", method = RequestMethod.GET)
     public void listPageBookApi(final Model model, Book book, HttpServletResponse response) throws Exception {
 
@@ -143,6 +158,7 @@ public class BookController {
      * @return
      * @throws Exception
      */
+    @RequiresRoles({"admin"})
     @RequestMapping(value = "/book/show", method = RequestMethod.GET)
     public String showBookView(final Model model, Book book) throws Exception {
 
@@ -198,11 +214,9 @@ public class BookController {
      *
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = "/book/shareData", method = RequestMethod.GET)
-    public String shareDataView(final Model model) throws Exception {
+    public String shareDataView(final Model model) {
         return "/book/shareData";
     }
-
 }

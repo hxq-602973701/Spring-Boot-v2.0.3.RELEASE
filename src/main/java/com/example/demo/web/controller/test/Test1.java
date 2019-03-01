@@ -1,4 +1,4 @@
-package com.example.demo.web.utils;
+package com.example.demo.web.controller.test;
 
 public class Test1 {
     public static Object object = new Object();

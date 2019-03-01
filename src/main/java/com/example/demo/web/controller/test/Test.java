@@ -1,11 +1,6 @@
-package com.example.demo.web;
+package com.example.demo.web.controller.test;
 
 import org.springframework.stereotype.Controller;
-
-import javax.servlet.Servlet;
-import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Controller
 public class Test {

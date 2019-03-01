@@ -1,4 +1,4 @@
-package com.example.demo.web;
+package com.example.demo.web.controller.test;
 
 import com.example.demo.dal.entity.main.user.User;
 import com.example.demo.dal.entity.main.user.UserRepository;

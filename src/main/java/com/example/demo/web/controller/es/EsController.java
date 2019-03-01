@@ -1,4 +1,4 @@
-package com.example.demo.web;
+package com.example.demo.web.controller.es;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;

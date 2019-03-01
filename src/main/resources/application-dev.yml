@@ -1,6 +1,7 @@
 #Server配置
 server:
   port: 8084
+debug: true
 
 #常量配置
 zzp:
@@ -34,7 +35,7 @@ spring:
         #druid相关配置
         druid:
           #监控统计拦截的filters
-          filters: stat,wall,logback
+          filters: stat,wall
           #配置初始化大小/最小/最大
           initial-size: 1
           min-idle: 1
@@ -59,10 +60,16 @@ spring:
       port: 6379
       password:
       timeout: 10000
-    #缓存配置
+    #缓存配置 配合redis完成注解配置
     cache:
         type: redis
         cache-names: mysiteforme
+    #TODO devtools 热加载不管用
+    devtools:
+      restart:
+        enabled: true
+    freemarker:
+      cache: false
     #elasticsearch
 #    elasticsearch:
 #      jest:
@@ -111,6 +118,37 @@ pagehelper:
 mybatis:
   mapper-locations: com.example.demo.dal.mapper.*
   type-aliases-package: com.example.demo.dal.mapper.entity
+
+  # Shiro
+shiro:
+    user:
+      # 登录地址
+      loginUrl: /login
+      # 权限认证失败地址
+      unauthorizedUrl: /unauth
+      # 首页地址
+      indexUrl: /index
+      # 验证码开关
+      captchaEnabled: true
+      # 验证码类型 math 数组计算 char 字符
+      captchaType: math
+    cookie:
+      # 设置Cookie的域名 默认空，即当前访问的域名
+      domain:
+      # 设置cookie的有效访问路径
+      path: /
+      # 设置HttpOnly属性
+      httpOnly: true
+      # 设置Cookie的过期时间，天为单位
+      maxAge: 30
+    session:
+      # Session超时时间（默认30分钟）
+      expireTime: 30
+      # 同步session到数据库的周期（默认1分钟）
+      dbSyncPeriod: 1
+      # 相隔多久检查一次session的有效性，默认就是10分钟
+      validationInterval: 1
+
 
 
 

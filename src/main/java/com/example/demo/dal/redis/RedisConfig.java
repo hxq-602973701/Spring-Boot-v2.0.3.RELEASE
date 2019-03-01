@@ -21,6 +21,7 @@ import java.time.Duration;
 
 
 @Configuration
+//TODO 缓存注解没起作用就是因为没加下边这个注解
 @EnableCaching
 public class RedisConfig {
 

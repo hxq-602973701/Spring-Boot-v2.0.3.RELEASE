@@ -19,6 +19,8 @@
     <!-- Common -->
     <script src="/static/common/common-v2.js?${RES_TIMESTAMP}"></script>
 
+    <link rel="stylesheet" type="text/css" href="/static/css/public.css"/>
+
 </head>
 <body>
 <@block name="main" >
