@@ -38,3 +38,8 @@ Spring-boot  (v2.0.3.RELEASE)
 * 整合ElasticSearch6.3.2<br>
 
    * 包含各种索引crud、以及搜索、预测<br><br>
+   
+ * 整合Shiro1.4.0<br>
+
+   * 暂时包含身份权限认证，及错误页跳转<br><br>
+   * [遇到的小坑，整合后无权限页不跳转](https://blog.csdn.net/qq_19301269/article/details/78615134)<br><br>
